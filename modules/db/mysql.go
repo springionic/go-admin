@@ -55,7 +55,7 @@ func (db *Mysql) InitDB(cfgs map[string]config.Database) Connection {
 	db.Once.Do(func() {
 		for conn, cfg := range cfgs {
 
-			sqlDB, err := sql.Open("mysql", cfg.GetDSN())
+			sqlDB, err := sql.Open("bytedmysql", cfg.GetDSN())
 
 			if err != nil {
 				if sqlDB != nil {
