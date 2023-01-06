@@ -11,6 +11,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoAdminGroup/html"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/GoAdminGroup/go-admin/context"
 	"github.com/GoAdminGroup/go-admin/modules/collection"
 	"github.com/GoAdminGroup/go-admin/modules/config"
@@ -30,8 +33,6 @@ import (
 	"github.com/GoAdminGroup/go-admin/template/types/action"
 	"github.com/GoAdminGroup/go-admin/template/types/form"
 	selection "github.com/GoAdminGroup/go-admin/template/types/form/select"
-	"github.com/GoAdminGroup/html"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type SystemTable struct {
@@ -956,7 +957,7 @@ func (s *SystemTable) GetMenuTable(ctx *context.Context) (menuTable Table) {
 		Where("parent_id", "=", 0).
 		Where("plugin_name", "=", name).
 		Select("id", "title").
-		OrderBy("order", "asc").
+		OrderBy("menu_order", "asc").
 		All()
 	allMenuIDs := make([]interface{}, len(allMenus))
 

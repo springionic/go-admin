@@ -151,7 +151,7 @@ func (driver *DBDriver) Load(sid string) (map[string]interface{}, error) {
 	}
 
 	var values map[string]interface{}
-	err = json.Unmarshal([]byte(sesModel["values"].(string)), &values)
+	err = json.Unmarshal([]byte(sesModel["session_values"].(string)), &values)
 	return values, err
 }
 
@@ -205,14 +205,14 @@ func (driver *DBDriver) Update(sid string, values map[string]interface{}) error 
 		sesModel, _ := driver.table().Where("sid", "=", sid).First()
 		if sesModel == nil {
 			if !config.GetNoLimitLoginIP() {
-				err = driver.table().Where("values", "=", sesValue).Delete()
+				err = driver.table().Where("session_values", "=", sesValue).Delete()
 				if db.CheckError(err, db.DELETE) {
 					return err
 				}
 			}
 			_, err := driver.table().Insert(dialect.H{
-				"values": sesValue,
-				"sid":    sid,
+				"session_values": sesValue,
+				"sid":            sid,
 			})
 			if db.CheckError(err, db.INSERT) {
 				return err
@@ -221,7 +221,7 @@ func (driver *DBDriver) Update(sid string, values map[string]interface{}) error 
 			_, err := driver.table().
 				Where("sid", "=", sid).
 				Update(dialect.H{
-					"values": sesValue,
+					"session_values": sesValue,
 				})
 			if db.CheckError(err, db.UPDATE) {
 				return err

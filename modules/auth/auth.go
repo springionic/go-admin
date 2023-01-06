@@ -10,12 +10,13 @@ import (
 	"github.com/GoAdminGroup/go-admin/modules/db/dialect"
 	"github.com/GoAdminGroup/go-admin/modules/logger"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/GoAdminGroup/go-admin/context"
 	"github.com/GoAdminGroup/go-admin/modules/db"
 	"github.com/GoAdminGroup/go-admin/modules/service"
 	"github.com/GoAdminGroup/go-admin/plugins/admin/models"
 	"github.com/GoAdminGroup/go-admin/plugins/admin/modules"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // Auth get the user model from Context.
@@ -90,7 +91,7 @@ func (s *TokenService) Name() string {
 
 func InitCSRFTokenSrv(conn db.Connection) (string, service.Service) {
 	list, err := db.WithDriver(conn).Table("goadmin_session").
-		Where("values", "=", "__csrf_token__").
+		Where("session_values", "=", "__csrf_token__").
 		All()
 	if db.CheckError(err, db.QUERY) {
 		logger.Error("csrf token query from database error: ", err)
@@ -124,8 +125,8 @@ func (s *TokenService) AddToken() string {
 	tokenStr := modules.Uuid()
 	s.tokens = append(s.tokens, tokenStr)
 	_, err := db.WithDriver(s.conn).Table("goadmin_session").Insert(dialect.H{
-		"sid":    tokenStr,
-		"values": "__csrf_token__",
+		"sid":            tokenStr,
+		"session_values": "__csrf_token__",
 	})
 	if db.CheckError(err, db.INSERT) {
 		logger.Error("csrf token insert into database error: ", err)
@@ -141,7 +142,7 @@ func (s *TokenService) CheckToken(toCheckToken string) bool {
 			s.tokens = append((s.tokens)[:i], (s.tokens)[i+1:]...)
 			err := db.WithDriver(s.conn).Table("goadmin_session").
 				Where("sid", "=", toCheckToken).
-				Where("values", "=", "__csrf_token__").
+				Where("session_values", "=", "__csrf_token__").
 				Delete()
 			if db.CheckError(err, db.DELETE) {
 				logger.Error("csrf token delete from database error: ", err)

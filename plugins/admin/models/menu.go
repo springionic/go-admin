@@ -53,7 +53,7 @@ func (t MenuModel) New(title, icon, uri, header, pluginName string, parentId, or
 		"parent_id":   parentId,
 		"icon":        icon,
 		"uri":         uri,
-		"order":       order,
+		"menu_order":  order,
 		"header":      header,
 		"plugin_name": pluginName,
 	})
@@ -119,8 +119,8 @@ func (t MenuModel) ResetOrder(data []byte) {
 			_, _ = t.Table(t.TableName).
 				Where("id", "=", v.ID).
 				Update(dialect.H{
-					"order":     count,
-					"parent_id": 0,
+					"menu_order": count,
+					"parent_id":  0,
 				})
 
 			for _, v2 := range v.Children {
@@ -129,16 +129,16 @@ func (t MenuModel) ResetOrder(data []byte) {
 					_, _ = t.Table(t.TableName).
 						Where("id", "=", v2.ID).
 						Update(dialect.H{
-							"order":     count,
-							"parent_id": v.ID,
+							"menu_order": count,
+							"parent_id":  v.ID,
 						})
 
 					for _, v3 := range v2.Children {
 						_, _ = t.Table(t.TableName).
 							Where("id", "=", v3.ID).
 							Update(dialect.H{
-								"order":     count,
-								"parent_id": v2.ID,
+								"menu_order": count,
+								"parent_id":  v2.ID,
 							})
 						count++
 					}
@@ -146,8 +146,8 @@ func (t MenuModel) ResetOrder(data []byte) {
 					_, _ = t.Table(t.TableName).
 						Where("id", "=", v2.ID).
 						Update(dialect.H{
-							"order":     count,
-							"parent_id": v.ID,
+							"menu_order": count,
+							"parent_id":  v.ID,
 						})
 					count++
 				}
@@ -156,8 +156,8 @@ func (t MenuModel) ResetOrder(data []byte) {
 			_, _ = t.Table(t.TableName).
 				Where("id", "=", v.ID).
 				Update(dialect.H{
-					"order":     count,
-					"parent_id": 0,
+					"menu_order": count,
+					"parent_id":  0,
 				})
 			count++
 		}
