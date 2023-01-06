@@ -140,18 +140,18 @@ func NewMenu(conn db.Connection, data NewMenuData) (int64, error) {
 	maxOrder := data.Order
 	checkOrder, _ := db.WithDriver(conn).Table("goadmin_menu").
 		Where("plugin_name", "=", data.PluginName).
-		OrderBy("order", "desc").
+		OrderBy("menu_order", "desc").
 		First()
 
 	if checkOrder != nil {
-		maxOrder = checkOrder["order"].(int64)
+		maxOrder = checkOrder["menu_order"].(int64)
 	}
 
 	id, err := db.WithDriver(conn).Table("goadmin_menu").
 		Insert(dialect.H{
 			"parent_id":   data.ParentId,
 			"type":        data.Type,
-			"order":       maxOrder,
+			"menu_order":  maxOrder,
 			"title":       data.Title,
 			"uuid":        data.Uuid,
 			"icon":        data.Icon,
@@ -184,7 +184,7 @@ func GetGlobalMenu(user models.UserModel, conn db.Connection, lang string, plugi
 		menus, _ = db.WithDriver(conn).Table("goadmin_menu").
 			Where("id", ">", 0).
 			Where("plugin_name", "=", plugName).
-			OrderBy("order", "asc").
+			OrderBy("menu_order", "asc").
 			All()
 	} else {
 
@@ -196,7 +196,7 @@ func GetGlobalMenu(user models.UserModel, conn db.Connection, lang string, plugi
 		menus, _ = db.WithDriver(conn).Table("goadmin_menu").
 			WhereIn("id", ids).
 			Where("plugin_name", "=", plugName).
-			OrderBy("order", "asc").
+			OrderBy("menu_order", "asc").
 			All()
 	}
 

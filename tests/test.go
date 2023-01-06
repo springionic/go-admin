@@ -5,14 +5,15 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/gavv/httpexpect"
+	fasthttp2 "github.com/valyala/fasthttp"
+
 	"github.com/GoAdminGroup/go-admin/modules/config"
 	"github.com/GoAdminGroup/go-admin/modules/db"
 	"github.com/GoAdminGroup/go-admin/modules/db/dialect"
 	"github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"
 	"github.com/GoAdminGroup/go-admin/tests/common"
 	"github.com/GoAdminGroup/go-admin/tests/frameworks/fasthttp"
-	"github.com/gavv/httpexpect"
-	fasthttp2 "github.com/valyala/fasthttp"
 )
 
 func Cleaner(config config.DatabaseList) {
@@ -69,14 +70,14 @@ func Cleaner(config config.DatabaseList) {
 			{"name": "Dashboard", "slug": "dashboard", "http_method": "GET,PUT,POST,DELETE", "http_path": "/"},
 		},
 		"goadmin_menu": {
-			{"parent_id": 0, "type": 1, "order": 2, "title": "Admin", "icon": "fa-tasks", "uri": ""},
-			{"parent_id": 1, "type": 1, "order": 2, "title": "Users", "icon": "fa-users", "uri": "/info/manager"},
-			{"parent_id": 0, "type": 1, "order": 3, "title": "test2 menu", "icon": "fa-angellist", "uri": "/example/test"},
-			{"parent_id": 1, "type": 1, "order": 4, "title": "Permission", "icon": "fa-ban", "uri": "/info/permission"},
-			{"parent_id": 1, "type": 1, "order": 5, "title": "Menu", "icon": "fa-bars", "uri": "/menu"},
-			{"parent_id": 1, "type": 1, "order": 6, "title": "Operation log", "icon": "fa-history", "uri": "/info/op"},
-			{"parent_id": 0, "type": 1, "order": 1, "title": "Dashboard", "icon": "fa-bar-chart", "uri": "/"},
-			{"parent_id": 0, "type": 1, "order": 7, "title": "User", "icon": "fa-users", "uri": "/info/user"},
+			{"parent_id": 0, "type": 1, "menu_order": 2, "title": "Admin", "icon": "fa-tasks", "uri": ""},
+			{"parent_id": 1, "type": 1, "menu_order": 2, "title": "Users", "icon": "fa-users", "uri": "/info/manager"},
+			{"parent_id": 0, "type": 1, "menu_order": 3, "title": "test2 menu", "icon": "fa-angellist", "uri": "/example/test"},
+			{"parent_id": 1, "type": 1, "menu_order": 4, "title": "Permission", "icon": "fa-ban", "uri": "/info/permission"},
+			{"parent_id": 1, "type": 1, "menu_order": 5, "title": "Menu", "icon": "fa-bars", "uri": "/menu"},
+			{"parent_id": 1, "type": 1, "menu_order": 6, "title": "Operation log", "icon": "fa-history", "uri": "/info/op"},
+			{"parent_id": 0, "type": 1, "menu_order": 1, "title": "Dashboard", "icon": "fa-bar-chart", "uri": "/"},
+			{"parent_id": 0, "type": 1, "menu_order": 7, "title": "User", "icon": "fa-users", "uri": "/info/user"},
 		},
 		"goadmin_role_users": {
 			{"user_id": 1, "role_id": 1},

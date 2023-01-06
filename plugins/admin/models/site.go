@@ -52,12 +52,12 @@ func (t SiteModel) Init(cfg map[string]string) SiteModel {
 	}
 	itemsCol := collection.Collection(items)
 	for key, value := range cfg {
-		row := itemsCol.Where("key", "=", key)
+		row := itemsCol.Where("site_key", "=", key)
 		if row.Length() == 0 {
 			_, err := t.Table(t.TableName).Insert(dialect.H{
-				"key":   key,
-				"value": value,
-				"state": SiteItemOpenState,
+				"site_key":   key,
+				"site_value": value,
+				"state":      SiteItemOpenState,
 			})
 			if db.CheckError(err, db.INSERT) {
 				panic(err)
@@ -88,7 +88,7 @@ func (t SiteModel) AllToMap() map[string]string {
 	}
 
 	for _, item := range items {
-		m[item["key"].(string)] = item["value"].(string)
+		m[item["site_key"].(string)] = item["site_value"].(string)
 	}
 
 	return m
@@ -104,7 +104,7 @@ func (t SiteModel) AllToMapInterface() map[string]interface{} {
 	}
 
 	for _, item := range items {
-		m[item["key"].(string)] = item["value"]
+		m[item["site_key"].(string)] = item["site_value"]
 	}
 
 	m["id"] = "1"
@@ -121,8 +121,8 @@ var allowEmptyKeys = []string{
 func (t SiteModel) Update(v form.Values) error {
 	for key, vv := range v {
 		if len(vv) > 0 && (vv[0] != "" || utils.InArray(allowEmptyKeys, key)) {
-			_, err := t.Table(t.TableName).Where("key", "=", key).Update(dialect.H{
-				"value": vv[0],
+			_, err := t.Table(t.TableName).Where("site_key", "=", key).Update(dialect.H{
+				"site_value": vv[0],
 			})
 			if db.CheckError(err, db.UPDATE) {
 				return err
